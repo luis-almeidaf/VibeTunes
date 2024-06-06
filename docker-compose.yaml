@@ -1,0 +1,25 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:alpine3.15
+    container_name: vibetunes_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1324
+      POSTGRES_DB: vibetunes
+
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: vibetunes_api
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+volumes:
+  db-data:
