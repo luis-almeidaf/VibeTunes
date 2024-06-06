@@ -15,4 +15,5 @@ public class Song {
     @Column(nullable = false)
     private String artist;
     private String album;
+    private String genre;
 }
