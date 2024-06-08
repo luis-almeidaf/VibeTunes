@@ -1,7 +1,6 @@
 package com.luis.VibeTunes.service;
 
-import com.luis.VibeTunes.model.playlist.Playlist;
-import com.luis.VibeTunes.model.user.User;
+import com.luis.VibeTunes.model.Playlist;
 import com.luis.VibeTunes.repository.PlaylistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

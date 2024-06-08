@@ -1,6 +1,6 @@
 package com.luis.VibeTunes.service;
 
-import com.luis.VibeTunes.model.user.User;
+import com.luis.VibeTunes.model.User;
 import com.luis.VibeTunes.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +17,10 @@ public class UserService {
         return this.userRepository.findAll();
     }
 
-    public User findUserById(Long id) {
-        return this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
-    }
+    //public User findUserById(Long id) {
+      //  return this.userRepository.findById(id);
+                //.orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
+    //}
 
     public User findUserByUsername(String username) {
         return this.userRepository.findUserByUsername(username);

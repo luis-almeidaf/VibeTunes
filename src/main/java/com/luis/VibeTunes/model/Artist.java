@@ -1,19 +1,17 @@
-package com.luis.VibeTunes.model.song;
+package com.luis.VibeTunes.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
-@Table(name = "songs")
 @Data
-public class Song {
+@Entity
+@Table(name = "artists")
+public class Artist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "artist_id")
     private Long id;
     @Column(nullable = false)
-    private String title;
-    @Column(nullable = false)
-    private String artist;
-    private String album;
+    private String name;
     private String genre;
 }

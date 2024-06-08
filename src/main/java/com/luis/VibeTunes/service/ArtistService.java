@@ -1,6 +1,6 @@
 package com.luis.VibeTunes.service;
 
-import com.luis.VibeTunes.model.artist.Artist;
+import com.luis.VibeTunes.model.Artist;
 import com.luis.VibeTunes.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
