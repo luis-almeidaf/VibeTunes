@@ -4,10 +4,10 @@ import com.luis.VibeTunes.dto.LoginRequestDto;
 import com.luis.VibeTunes.dto.LoginResponseDto;
 import com.luis.VibeTunes.repository.UserRepository;
 import com.luis.VibeTunes.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
@@ -25,6 +25,7 @@ public class LoginController {
     private UserRepository userRepository;
 
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
     private UserService userService;
 
     public LoginController(JwtEncoder jwtEncoder,

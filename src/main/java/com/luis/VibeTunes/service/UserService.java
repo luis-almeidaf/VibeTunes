@@ -31,21 +31,9 @@ public class UserService {
         return this.userRepository.findUserByUsername(username);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
-    }
-
     public boolean isLoginCorrect(LoginRequestDto loginRequestDto, PasswordEncoder passwordEncoder) {
         Optional<User> userOptional = findUserByUsername(loginRequestDto.username());
         return passwordEncoder.matches(loginRequestDto.password(),userOptional.get().getPassword());
     }
 
-    public boolean isLoginCorrect(LoginRequestDto loginRequestDto) {
-        Optional<User> userOptional = findUserByUsername(loginRequestDto.username());
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            return passwordEncoder.matches(loginRequestDto.password(), user.getPassword());
-        }
-        return false;
-    }
 }
