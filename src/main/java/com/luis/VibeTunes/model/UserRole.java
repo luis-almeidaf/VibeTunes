@@ -1,30 +1,15 @@
 package com.luis.VibeTunes.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
-@Entity
-@Table(name = "roles")
-public class UserRole {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long roleId;
-    private String name;
+@Getter
+public enum UserRole {
+    ADMIN("admin"),
+    BASIC("basic");
 
-    public enum values {
-        ADMIN(1L),
-        BASIC(2L);
-
-        @lombok.Getter
-        final long roleId;
-
-        values(long roleId) {
-            this.roleId = roleId;
-        }
+    private final String role;
+    UserRole(String role) {
+        this.role = role;
     }
+
 }
