@@ -17,11 +17,10 @@ public class Song {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @JoinColumn(name = "song_id")
     private Long id;
-
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private String artist;
+    private Artist artist;
     private String album;
     private String genre;
 }
