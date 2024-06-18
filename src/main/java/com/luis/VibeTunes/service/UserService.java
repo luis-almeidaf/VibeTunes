@@ -21,7 +21,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     public List<User> findAll() {
         return this.userRepository.findAll();
     }
@@ -33,8 +32,6 @@ public class UserService {
     public User findUserByUsername(String username) {
         return this.userRepository.findByUsername(username);
     }
-
-
 
     public void newUser(CreateUserDto dto) {
 
@@ -48,7 +45,6 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(dto.password()));
         user.setEmail(dto.email());
         user.setRole(UserRole.BASIC);
-
         userRepository.save(user);
     }
 
