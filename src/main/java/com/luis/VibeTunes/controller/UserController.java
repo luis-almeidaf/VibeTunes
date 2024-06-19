@@ -5,7 +5,10 @@ import com.luis.VibeTunes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     public ResponseEntity<List<User>> listUsers() {
         List<User> list = userService.findAll();
         return ResponseEntity.ok().body(list);
@@ -27,7 +31,7 @@ public class UserController {
         var user = userService.findUserByUsername(username);
         return ResponseEntity.ok().body(user);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @GetMapping(value = "id/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) throws Exception {
         var user = userService.findUserById(id);

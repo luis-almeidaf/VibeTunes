@@ -6,20 +6,24 @@ import com.luis.VibeTunes.repository.SongRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SongService {
+
     @Autowired
     SongRepository songRepository;
 
-    public Song findByTitle(String title) {
-        return this.songRepository.findByTitle(title);
+
+    public List<Song> findByTitle(String title) {
+        return songRepository.findByTitle(title);
     }
 
-    public Song findByGenre(String genre) {
-        return this.songRepository.findByGenre(genre);
+    public List<Song> findByGenre(String genre) {
+        return songRepository.findByGenre(genre);
     }
 
-    public Song saveSong (CreateSongDto songDto) {
+    public Song newSong (CreateSongDto songDto) {
         var song = new Song();
         song.setTitle(songDto.tittle());
         song.setArtist(songDto.artist());

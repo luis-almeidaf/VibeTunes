@@ -20,7 +20,7 @@ public class Song {
     @Column(nullable = false)
     private String title;
     @Column(nullable = false)
-    private Artist artist;
+    private String artist;
     private String album;
     private String genre;
 }
