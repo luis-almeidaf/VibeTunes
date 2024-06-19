@@ -1,5 +1,6 @@
 package com.luis.VibeTunes.controller;
 
+import com.luis.VibeTunes.dto.UserResponseDto;
 import com.luis.VibeTunes.model.User;
 import com.luis.VibeTunes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +28,16 @@ public class UserController {
     }
 
     @GetMapping(value = "/username/{username}")
-    public ResponseEntity<User> findUserByUsername(@PathVariable String username) {
-        var user = userService.findUserByUsername(username);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<UserResponseDto> findUserByUsername(@PathVariable String username) {
+        UserResponseDto userResponseDto = userService.findUserByUsername(username);
+        if (userResponseDto != null){
+            return ResponseEntity.ok().body(userResponseDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
+
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @GetMapping(value = "id/{id}")
     public ResponseEntity<User> findUserById(@PathVariable Long id) throws Exception {
