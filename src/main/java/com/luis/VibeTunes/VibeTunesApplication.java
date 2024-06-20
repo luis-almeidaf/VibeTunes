@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class VibeTunesApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(VibeTunesApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(VibeTunesApplication.class, args);
+    }
 }
