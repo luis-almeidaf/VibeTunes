@@ -11,9 +11,12 @@ import java.util.List;
 @Service
 public class SongService {
 
-    @Autowired
-    SongRepository songRepository;
 
+    private final SongRepository songRepository;
+
+    public SongService(SongRepository songRepository) {
+        this.songRepository = songRepository;
+    }
 
     public List<Song> findByTitle(String title) {
         return songRepository.findByTitle(title);
@@ -23,12 +26,12 @@ public class SongService {
         return songRepository.findByGenre(genre);
     }
 
-    public Song newSong (CreateSongDto songDto) {
+    public void newSong (CreateSongDto songDto) {
         var song = new Song();
         song.setTitle(songDto.tittle());
         song.setArtist(songDto.artist());
         song.setAlbum(songDto.album());
         song.setGenre(songDto.genre());
-        return this.songRepository.save(song);
+        songRepository.save(song);
     }
 }

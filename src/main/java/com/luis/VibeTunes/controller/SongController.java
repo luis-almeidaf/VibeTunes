@@ -16,7 +16,7 @@ public class SongController {
 
     @Autowired
     private SongService songService;
-
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @PostMapping
     public ResponseEntity<CreateSongDto> newSong ( @RequestBody CreateSongDto dto) {
         songService.newSong(dto);
