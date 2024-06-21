@@ -1,4 +1,6 @@
 package com.luis.VibeTunes.dto;
 
-public record CreateSongDto(String tittle, String artist, String album, String genre ) {
+import com.luis.VibeTunes.model.Artist;
+
+public record CreateSongDto(String tittle, Artist artist, String album, String genre ) {
 }

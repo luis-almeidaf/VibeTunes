@@ -1,4 +1,6 @@
 package com.luis.VibeTunes.dto;
 
-public record UpdateSongDto(String title, String artist, String album, String genre) {
+import com.luis.VibeTunes.model.Artist;
+
+public record UpdateSongDto(String title, Artist artist, String album, String genre) {
 }

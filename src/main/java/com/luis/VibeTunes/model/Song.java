@@ -1,12 +1,6 @@
 package com.luis.VibeTunes.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -19,8 +13,9 @@ public class Song {
     private Long id;
     @Column(nullable = false)
     private String title;
-    @Column(nullable = false)
-    private String artist;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "artist_id", nullable = false)
+    private Artist artist;
     private String album;
     private String genre;
 }
