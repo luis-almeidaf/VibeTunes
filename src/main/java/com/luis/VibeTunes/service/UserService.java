@@ -66,8 +66,8 @@ public class UserService {
     }
 
     @Transactional
-    public User updateUser (Long id, UpdateUserDto updatedUser) throws Exception {
-        return userRepository.findById(id)
+    public void updateUser (Long id, UpdateUserDto updatedUser) throws Exception {
+        userRepository.findById(id)
                 .map(user -> {
                     user.setUsername(updatedUser.username());
                     user.setPassword((updatedUser.password()));

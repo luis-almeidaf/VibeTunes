@@ -1,7 +1,10 @@
 package com.luis.VibeTunes.controller;
 
 import com.luis.VibeTunes.dto.CreateSongDto;
+import com.luis.VibeTunes.dto.UpdateSongDto;
+import com.luis.VibeTunes.dto.UpdateUserDto;
 import com.luis.VibeTunes.model.Song;
+import com.luis.VibeTunes.model.User;
 import com.luis.VibeTunes.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +17,31 @@ import java.util.List;
 @RequestMapping("/songs")
 public class SongController {
 
-    @Autowired
-    private SongService songService;
+    private final SongService songService;
+
+    public SongController(SongService songService) {
+        this.songService = songService;
+    }
+
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @PostMapping
     public ResponseEntity<CreateSongDto> newSong ( @RequestBody CreateSongDto dto) {
         songService.newSong(dto);
         return ResponseEntity.ok(dto);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @DeleteMapping(value = "id/{id}")
+    public ResponseEntity<Song> deleteSong (@PathVariable Long id) throws Exception {
+        songService.deleteSong(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @PutMapping(value = "id/{id}")
+    public ResponseEntity<?> updateUser (@PathVariable Long id, @RequestBody UpdateSongDto updatedSong) throws Exception {
+        songService.updateSong(id, updatedSong);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping(value = "/title/{title}")
