@@ -2,11 +2,8 @@ package com.luis.VibeTunes.controller;
 
 import com.luis.VibeTunes.dto.CreateSongDto;
 import com.luis.VibeTunes.dto.UpdateSongDto;
-import com.luis.VibeTunes.dto.UpdateUserDto;
 import com.luis.VibeTunes.model.Song;
-import com.luis.VibeTunes.model.User;
 import com.luis.VibeTunes.service.SongService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

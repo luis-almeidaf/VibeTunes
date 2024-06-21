@@ -51,6 +51,7 @@ public class SongService {
                     song.setTitle(updatedSong.title());
                     song.setArtist((updatedSong.artist()));
                     song.setAlbum(updatedSong.album());
+                    song.setGenre(updatedSong.genre());
                     return songRepository.save(song);
                 }).orElseThrow(() -> new Exception("Nenhuma música encontrada"));
     }
