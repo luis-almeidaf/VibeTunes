@@ -9,7 +9,7 @@ import lombok.Data;
 public class Song {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @JoinColumn(name = "song_id")
+    @Column(name = "song_id")
     private Long id;
     @Column(nullable = false)
     private String title;

@@ -20,7 +20,6 @@ public class ArtistService {
         this.artistRepository = artistRepository;
     }
 
-
     public Artist findArtistByName(String name) {
         return artistRepository.findArtistByName(name);
     }
@@ -33,7 +32,7 @@ public class ArtistService {
     public void newArtist(CreateArtistDto artistDto) {
         Artist artistFromDB = artistRepository.findArtistByName(artistDto.name());
         if (artistFromDB != null) {
-            throw  new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Artista já cadastrado")
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Artista já cadastrado");
         }
         Artist artist = new Artist();
         artist.setName(artistDto.name());
@@ -50,7 +49,7 @@ public class ArtistService {
     }
 
     @Transactional
-    public  void updateArtist(Long id, UpdateArtistDto updateArtistDto) throws Exception {
+    public void updateArtist(Long id, UpdateArtistDto updateArtistDto) throws Exception {
         artistRepository.findById(id)
                 .map(artist -> {
                     artist.setName(updateArtistDto.name());
