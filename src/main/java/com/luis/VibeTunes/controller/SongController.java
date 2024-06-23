@@ -21,9 +21,9 @@ public class SongController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
-    @PostMapping
-    public ResponseEntity<CreateSongDto> newSong ( @RequestBody CreateSongDto dto) {
-        songService.newSong(dto);
+    @PostMapping()
+    public ResponseEntity<CreateSongDto> newSong (@RequestParam Long artistId, @RequestBody CreateSongDto dto) {
+        songService.newSong(artistId, dto);
         return ResponseEntity.ok(dto);
     }
 
@@ -51,5 +51,4 @@ public class SongController {
         List<Song> songs = songService.findByGenre(genre);
         return ResponseEntity.ok(songs);
     }
-
 }
