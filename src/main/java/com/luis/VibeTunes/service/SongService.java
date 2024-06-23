@@ -4,12 +4,18 @@ import com.luis.VibeTunes.dto.CreateSongDto;
 import com.luis.VibeTunes.dto.UpdateSongDto;
 import com.luis.VibeTunes.model.Artist;
 import com.luis.VibeTunes.model.Song;
+import com.luis.VibeTunes.model.User;
 import com.luis.VibeTunes.repository.ArtistRepository;
 import com.luis.VibeTunes.repository.SongRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class SongService {
@@ -30,26 +36,33 @@ public class SongService {
         return songRepository.findByGenre(genre);
     }
 
-    @Transactional
-    public void newSong(Long artistId, CreateSongDto songDto) {
-        Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid artist id: " + artistId));
-        Song song = new Song();
-        song.setTitle(songDto.tittle());
-        song.setArtist(artist);
-        song.setAlbum(songDto.album());
-        song.setGenre(songDto.genre());
-        songRepository.save(song);
+    public List<Song> findAll() {
+        return this.songRepository.findAll();
     }
 
+    @Transactional
+    public Song newSong(CreateSongDto songDto)                         {
+        Optional<Artist> optionalArtist = artistRepository.findById(songDto.artistId());
+        if (optionalArtist.isPresent()) {
+            Artist artist = optionalArtist.get();
+            Song song = new Song();
+            song.setTitle(songDto.title());
+            song.setGenre(songDto.genre());
+            song.setArtist(artist);
 
+            artist.getSongs().add(song);
+            songRepository.save(song);
+
+            return song;
+        } else {
+            throw new EntityNotFoundException("Artist not found");
+        }
+    }
 
     @Transactional
     public void deleteSong(Long id) throws Exception {
-        if (!songRepository.existsById(id)) {
-            throw new Exception("Não foi encontrada uma música com esse id: " + id); // criar exceção depois
-        }
-        songRepository.deleteById(id);
+        Song song = songRepository.findById(id).orElseThrow(() -> new Exception("Song not found"));
+        songRepository.delete(song);
     }
 
     @Transactional
@@ -57,13 +70,10 @@ public class SongService {
         songRepository.findById(id)
                 .map(song -> {
                     song.setTitle(updatedSong.title());
-                    song.setArtist((updatedSong.artist()));
-                    song.setAlbum(updatedSong.album());
                     song.setGenre(updatedSong.genre());
                     return songRepository.save(song);
                 }).orElseThrow(() -> new Exception("Nenhuma música encontrada"));
     }
-
 
 }
 

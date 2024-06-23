@@ -4,6 +4,7 @@ import com.luis.VibeTunes.dto.CreateSongDto;
 import com.luis.VibeTunes.dto.UpdateSongDto;
 import com.luis.VibeTunes.model.Song;
 import com.luis.VibeTunes.service.SongService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,14 @@ public class SongController {
 
     public SongController(SongService songService) {
         this.songService = songService;
+
     }
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @PostMapping()
-    public ResponseEntity<CreateSongDto> newSong (@RequestParam Long artistId, @RequestBody CreateSongDto dto) {
-        songService.newSong(artistId, dto);
-        return ResponseEntity.ok(dto);
+    public ResponseEntity<Song> newSong(@RequestBody CreateSongDto createSongDto) {
+        Song createdSong = songService.newSong(createSongDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdSong);
     }
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
@@ -50,5 +52,12 @@ public class SongController {
     public ResponseEntity<List<Song>> findByGenre(@PathVariable String genre) {
         List<Song> songs = songService.findByGenre(genre);
         return ResponseEntity.ok(songs);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @GetMapping
+    public ResponseEntity<List<Song>> listSongs() {
+        List<Song> list = songService.findAll();
+        return ResponseEntity.ok().body(list);
     }
 }

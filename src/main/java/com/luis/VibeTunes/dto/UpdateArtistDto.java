@@ -1,4 +1,4 @@
 package com.luis.VibeTunes.dto;
 
-public record UpdateArtistDto(String name, String genre) {
+public record UpdateArtistDto(String name) {
 }
