@@ -13,9 +13,9 @@ import java.util.UUID;
 public class Song {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "song_id")
-    private UUID id;
+    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -31,18 +31,18 @@ public class Song {
     public Song() {
     }
 
-    public Song(UUID id, String title, String genre, Artist artist) {
+    public Song(Long id, String title, String genre, Artist artist) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.artist = artist;
     }
 
-    public UUID getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

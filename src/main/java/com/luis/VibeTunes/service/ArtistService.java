@@ -30,6 +30,10 @@ public class ArtistService {
         return artistRepository.findArtistByName(name);
     }
 
+    public List<Artist> findAll() {
+        return this.artistRepository.findAll();
+    }
+
     @Transactional
     public void newArtist(CreateArtistDto artistDto) {
         Artist artistFromDB = artistRepository.findArtistByName(artistDto.name());

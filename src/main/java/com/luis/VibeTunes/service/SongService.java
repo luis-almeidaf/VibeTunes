@@ -41,7 +41,7 @@ public class SongService {
     }
 
     @Transactional
-    public Song newSong(CreateSongDto songDto)                         {
+    public Song newSong(CreateSongDto songDto) {
         Optional<Artist> optionalArtist = artistRepository.findById(songDto.artistId());
         if (optionalArtist.isPresent()) {
             Artist artist = optionalArtist.get();
@@ -61,7 +61,7 @@ public class SongService {
 
     @Transactional
     public void deleteSong(Long id) throws Exception {
-        Song song = songRepository.findById(id).orElseThrow(() -> new Exception("Song not found"));
+        Song song = songRepository.findById(id).orElseThrow(() -> new Exception("Música não encontrada"));
         songRepository.delete(song);
     }
 
@@ -72,7 +72,7 @@ public class SongService {
                     song.setTitle(updatedSong.title());
                     song.setGenre(updatedSong.genre());
                     return songRepository.save(song);
-                }).orElseThrow(() -> new Exception("Nenhuma música encontrada"));
+                }).orElseThrow(() -> new Exception("Música não encontrada"));
     }
 
 }

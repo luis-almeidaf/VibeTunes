@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.UUID;
+import java.util.List;
 
 @RestController
 @RequestMapping("/artists")
@@ -45,6 +45,13 @@ public class ArtistController {
     public ResponseEntity<Artist> findByName(@PathVariable String name) {
         Artist artist = artistService.findArtistByName(name);
         return ResponseEntity.ok(artist);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @GetMapping
+    public ResponseEntity<List<Artist>> listSongs() {
+        List<Artist> list = artistService.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
 }

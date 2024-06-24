@@ -10,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/songs")
@@ -38,7 +39,7 @@ public class SongController {
 
     @PreAuthorize("hasAuthority('ADMIN_ROLE')")
     @PutMapping(value = "id/{id}")
-    public ResponseEntity<?> updateUser (@PathVariable Long id, @RequestBody UpdateSongDto updatedSong) throws Exception {
+    public ResponseEntity<?> updateSong (@PathVariable Long id, @RequestBody UpdateSongDto updatedSong) throws Exception {
         songService.updateSong(id, updatedSong);
         return ResponseEntity.ok().build();
     }
