@@ -5,7 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
@@ -22,8 +22,7 @@ public class Playlist {
     @JoinColumn(name = "user_id")
     private User user;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Song> songs;
+    private Set<Song> songs;
     @CreationTimestamp
     private Instant creationTimestamp;
-
 }
