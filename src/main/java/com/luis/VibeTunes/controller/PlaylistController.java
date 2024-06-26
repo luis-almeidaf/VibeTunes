@@ -5,7 +5,10 @@ import com.luis.VibeTunes.dto.UpdatePlaylistDto;
 import com.luis.VibeTunes.model.Playlist;
 import com.luis.VibeTunes.service.PlaylistService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/playlists")
@@ -42,13 +45,28 @@ public class PlaylistController {
     }
 
     @DeleteMapping("/{playlistId}/songs/{songId}")
-    public Playlist removeSongFromPlaylist(@PathVariable Long playlistId, @PathVariable Long songId) throws Exception {
-        return playlistService.removeSongFromPlaylist(playlistId, songId);
+    public ResponseEntity<?> removeSongFromPlaylist(@PathVariable Long playlistId, @PathVariable Long songId) throws Exception {
+        playlistService.removeSongFromPlaylist(playlistId, songId);
+        return  ResponseEntity.noContent().build();
     }
 
-    //correções: permitir que a mesma música seja add em várias playlists,
-    // acho que é só mudar de set para list,
-    // ou dar algum jeito de cada usuário tenha sua playlist
-    //melhorar os dto de resposta
-    // alterar para que somente o usuário dono da playlist possa altera-la ou admins
+    @GetMapping(value = "/playlistName/{playlistName}")
+    public ResponseEntity<List<Playlist>> findPlaylistByName (@PathVariable String playlistName) {
+        List<Playlist> playlists = playlistService.findPlaylistByName(playlistName);
+        return ResponseEntity.ok(playlists);
+    }
+
+    @GetMapping(value = "/username/{username}")
+    public ResponseEntity<List<Playlist>> findPlaylistByUserUsername (@PathVariable String username) {
+        List<Playlist> playlists = playlistService.findPlaylistByUsername(username);
+        return ResponseEntity.ok(playlists);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN_ROLE')")
+    @GetMapping
+    public ResponseEntity<List<Playlist>> findAll () {
+        List<Playlist> playlists = playlistService.findAll();
+        return ResponseEntity.ok(playlists);
+    }
+
 }

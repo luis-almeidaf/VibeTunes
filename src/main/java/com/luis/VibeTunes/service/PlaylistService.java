@@ -9,11 +9,15 @@ import com.luis.VibeTunes.repository.PlaylistRepository;
 import com.luis.VibeTunes.repository.SongRepository;
 import com.luis.VibeTunes.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlaylistService {
@@ -28,11 +32,11 @@ public class PlaylistService {
         this.songRepository = songRepository;
     }
 
-    public Playlist findPlaylistByName(String playlistName) {
+    public List<Playlist> findPlaylistByName(String playlistName) {
         return this.playlistRepository.findPlaylistByName(playlistName);
     }
 
-    public List<Playlist> findPlaylistByUserUsername(String username) {
+    public List<Playlist> findPlaylistByUsername(String username) {
         return this.playlistRepository.findPlaylistByUserUsername(username);
     }
 
@@ -55,6 +59,13 @@ public class PlaylistService {
     @Transactional
     public void deletePlaylist(Long playlistId) throws Exception {
         Playlist playlist = playlistRepository.findById(playlistId).orElseThrow(() -> new Exception("Playlist não encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(authentication.getName());
+        if (!playlist.getUser().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para alterar essa playlist");
+        }
+
         playlistRepository.delete(playlist);
     }
 
@@ -62,34 +73,58 @@ public class PlaylistService {
     public void updatePlaylist(Long playlistId, UpdatePlaylistDto updatePlaylistDto) throws Exception {
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new Exception("Playlist não encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(authentication.getName());
+        if (!playlist.getUser().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para alterar essa playlist");
+        }
         playlist.setName(updatePlaylistDto.name());
 
         playlistRepository.save(playlist);
     }
 
     @Transactional
-    public Playlist addSongToPlaylist(Long playlistId, Long songId) throws Exception {
+    public void addSongToPlaylist(Long playlistId, Long songId) throws Exception {
 
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new Exception("Playlist não encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(authentication.getName());
+        if (!playlist.getUser().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para alterar essa playlist");
+        }
+
+        boolean songAlreadyInPlaylist = playlist.getSongs().stream()
+                .anyMatch(song -> song.getId().equals(songId));
+        if (songAlreadyInPlaylist) {
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Música já foi adicionada a playlist");
+        }
 
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new Exception("Música não encontrada"));
 
         playlist.getSongs().add(song);
-        return playlistRepository.save(playlist);
+        playlistRepository.save(playlist);
     }
 
     @Transactional
-    public Playlist removeSongFromPlaylist(Long playlistId, Long songId) throws Exception {
+    public void removeSongFromPlaylist(Long playlistId, Long songId) throws Exception {
 
         Playlist playlist = playlistRepository.findById(playlistId)
                 .orElseThrow(() -> new Exception("Playlist não encontrada"));
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = userRepository.findByUsername(authentication.getName());
+        if (!playlist.getUser().equals(currentUser)) {
+            throw new AccessDeniedException("Você não tem permissão para alterar essa playlist");
+        }
 
         Song song = songRepository.findById(songId)
                 .orElseThrow(() -> new Exception("Música não encontrada"));
 
         playlist.getSongs().remove(song);
-        return playlistRepository.save(playlist);
+        playlistRepository.save(playlist);
     }
 }
